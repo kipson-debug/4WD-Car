@@ -1,0 +1,22 @@
+void pauseIntelligente(unsigned long duree) {
+  // 1. On note l'heure précise du début de la pause
+  unsigned long tempsDeDepart = millis();
+  
+  // 2. Tant que le temps écoulé n'a pas atteint la durée demandée...
+  while (millis() - tempsDeDepart < duree) {
+    
+    // ========================================================
+    // C'EST ICI QUE ÇA DEVANCE LE DELAY CLASSIQUE !
+    // L'Arduino tourne ici des milliers de fois par seconde.
+    // Vous pouvez y insérer une action prioritaire :
+    // ========================================================
+    
+    if (digitalRead(2) == 0) { // Exemple : Si le bouton d'urgence (broche 2) est appuyé
+      Serial.println("ALERTE : Pause interrompue par l'utilisateur !");
+      break; // On casse instantanément le "while" pour sortir de la pause
+    }
+    
+    // Petite pause de sécurité matérielle de 1 microseconde (facultatif)
+    delayMicroseconds(1); 
+  }
+}
